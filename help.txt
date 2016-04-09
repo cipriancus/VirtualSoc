@@ -1,0 +1,72 @@
+Bine ati venit la VirtualSoc ! 
+
+Va multumim ca ne folositi serviciile si ca ati consultat manualul de utilizare al aplicatiei. In sectiunile ce urmeaza vi se va prezenta cum functioneaza
+protocolul aplicatiei astfel incat sa aveti parte de o utilizare cat mai placuta a sa. 
+
+Sa incepem. Aplicatia este compusa din 2 mari module: partea sociala (in care puteti posta, vedea profile etc) si mesageria (unde se poate comunica cu utilizatorii).
+
+Nota: oricine poate vedea un profil, postari fara a fi inregistrat dar nu vor aparea decat postarile cu permisiuni globale
+	  $ este o notatie pentru interpretorul de la linia de comanda, nu trebuie introdus
+	  " " din comenzi sunt obligatorii, nu sunt doar notatii
+
+Comenzile si protocolul aplicatiei este urmatorul:
+
+	Help este functie fara parametri si se apeleaza : $help
+
+ 	HelpMe este functie fara parametri si se apeleaza :$helpme
+
+ 	Register se apeleaza : $register username parola 
+		 	Username-ul este un sir de caractere de maxim 100 de caractere
+		 	Parola este un sir de caractere de maxim 100 de caractere
+		 	Daca username-ul exista deja se va afisa un mesaj de eroare
+
+ 	Login se apeleaza : $login username parola 
+		 	Username-ul este un sir de caractere de maxim 100 de caractere
+		 	Parola este un sir de caractere de maxim 100 de caractere
+		 	Daca username-ul nu exista se va afisa un mesaj de eroare iar utilizatorul ori se inregistreaza ori corecteza username-ul si parola
+
+ 	View_profile se apeleaza:  $view_profile usernameOfUser
+	 	UsernameOfUser este id-ul persoanei respective (adica numele userului ex: cipriancus)
+	 	Daca username-ul nu exista se va afisa un mesaj de eroare 
+
+ 	View_postari se apeleaza fara parametri: $view_postari
+	 	Afiseaza pe ecran postarile publice si, in functie de relatia sa cu o persoana se vor afisa postarile ce au permisiunile potrivite.
+	 	Se va afisa:  "NumeUtilizator" a postat "MESAJ" "DATA" 
+	 	Nu exista mesaje de eroare, daca nu exista postari publice se va afisa "Nu exista postari publice"
+
+ 	Post se apeleaza: $ post "continut" permisiuni
+	 	Continut: este un sir de caractere de maxim 500 de caractere scris inte ghilimele 
+	 	Permisiuni are valorile
+		 	Nesetat:implicit este global, 0
+		 	1 (prieteni): doar utilizatorii prieteni il pot vedea.
+		 	2(cunostinta):un prieten cu mai multe permisiuni decat optiunea 1.
+		 	3(prieten apropiat):un pritern apropiat are cele mai mari permisiuni. Un apropiat poate vedea postarile pentru cunostinte, globale si prieteni dar nu si invers.
+		
+ 	Add_prieten se va apela:$ add_prieten username lista
+	 	Username:sir de caractere de maxim  100 de caractere
+	 	Lista: gol-implicit la prieteni(1), 2 (Cunostinta),1(Prieten),3(Prieten Apropiat) 
+	 	Eroare daca nu se cunoaste lista sau nu se scrie cum trebuie
+
+ 	Set_profile se va apela:$set_profile "Camp" "Valoare" 
+	 	Exemplu:$set_profile "Nume" "Ciprian"
+	 	Din set_profile Camp si Valoare trebuie sa fie:
+	 	Numele:char de maxim 100 de caractere
+	 	Prenume:char de maxim 100  de caractere
+	 	Data nasterii:se va scrie DD-MM-YYYY si are exact 10 caractere, se va returna o eroare in caz contrar
+	 	Telefon:un numar de 15 cifre in care se poate adauga si prefix e.g +407xxxxxxx sau numere de fix, nu se va verifica corectitudinea numarului
+	 	Descriere: sir de caractere de maxim 500 de caractere ce are ca scop descrierea utilizatorului
+	 	Ocupatie:sir de char de maxim 100 de caractere
+	 	Permisiune: exact ca mai sus.
+
+ 	Messages:nu are parametri, deschide mesageria aplicatiei si se pot trimite mesaje, citi etc se apeleaza: $messages
+	 	View_messages se va apela $view_messages, nu are parametri si afiseaza toate conversatiile cu diferitii utililizatori pe care acesta le-a avut
+	 	Open se va apela $open  user, va deschide conversatie pe care a avut-o cu utilizatorul specificat, se pot vedea mesajele pe care le-a primit in timp ce era offline si poate raspunde la ele sau trimite altele noi.
+			 	Reply se va apela  $reply mesaj, se va adauga "mesaj" la conversatie, mesaj are maxim 500 de caractere
+	 	Delete se apeleaza $delete username, va sterge conversatia,  utilizatorul cu care are conversatia nu este afectat de stergerea mesajelor
+	 	Send se va apela $send username message, unde username este utilizatorul caruia trimit mesajul si message este mesajul trimis de maxim 500 de caractere
+	 	Exit se va apela $exit si va produce revenirea la panoul principal are retelei unde va putea posta, adauga prieteni etc
+	 	Nu se pot apela comenzile de mai sus in messages adica, nu puteti vedea profile etc cat timp sunteti in modulul messages
+
+
+In modulul Messages pot aparea erori, cum ar fi view_messages nu returneaza nimic, caz in care utilizatorul va fi anuntat ca nu are mesaje; 
+open, detele, send pot avea useri invalizi caz in care se va returna o eroare si campul mesaj poate avea mai mult de 500 de caractere caz in care userul va fi notificat si rugat sa il rescrie
